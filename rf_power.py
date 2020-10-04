@@ -5,23 +5,33 @@ import asyncio
 latitude = 0
 longitude = 0
 altitude = 0
+fix_quality = 0
 
 async def gps_reader(ip, port):
     reader, writer = await asyncio.open_connection(ip, port)  
     while True:
-        print ('Reading\n')
+        global altitude, latitude, longitude, fix_quality
         data = await reader.readline()
-        print ('Readed data: ' + str(data)) # Update globarl vars / sync
+        data = data.decode().split(',')
+        #print ('Readed data: ' + str(data)) # Update globarl vars / sync
+        altitude = data[9]
+        latitude = data[2]
+        longitude = data[4]
+        fix_quality = data[6]
 
 async def power_reader ():
     proc = await asyncio.create_subprocess_exec(
-        'rtl_power', '-p', '1', '-i', '5', '-f', '432100k:432112k:12k',
+        'rtl_power', '-p', '1', '-i', '1', '-f', '432100k:432112k:12k',
         stdout=asyncio.subprocess.PIPE)
     try:
         while True:
             data = await proc.stdout.readline()
             line = data.decode('ascii').rstrip()
             data = line.split(', ')
+            data.append(latitude)
+            data.append(longitude)
+            data.append(altitude)
+            data.append(fix_quality)
             print (str(data))
             
     except:
@@ -30,7 +40,7 @@ async def power_reader ():
         raise
 
 async def main ():
-    await asyncio.gather(power_reader(), gps_reader("192.168.1.16", 11123))
+    await asyncio.gather(power_reader(), gps_reader("192.168.1.4", 11123))
     
 if __name__ == "__main__":
     asyncio.run (main())
