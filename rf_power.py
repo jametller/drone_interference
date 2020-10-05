@@ -7,6 +7,7 @@ latitude = 0
 longitude = 0
 altitude = 0
 fix_quality = 0
+lock = asyncio.Lock()
 
 async def connect_gps(ip, port):
     while True:
@@ -21,14 +22,15 @@ async def gps_reader(ip, port):
     reader = await connect_gps(ip, port)
     
     while True:
-        global altitude, latitude, longitude, fix_quality
+        global altitude, latitude, longitude, fix_quality, lock
         try:
             data = await reader.readline()
             data = data.decode().split(',')
-            altitude = data[9]
-            latitude = data[2]
-            longitude = data[4]
-            fix_quality = data[6]
+            async with lock:
+                altitude = data[9]
+                latitude = data[2]
+                longitude = data[4]
+                fix_quality = data[6]
         except:
             altitude = latitude = longitude = fix_quality = 0
             reader = await connect_gps(ip, port)
@@ -40,13 +42,15 @@ async def power_reader ():
         stdout=asyncio.subprocess.PIPE)
     try:
         while True:
+            global lock
             data = await proc.stdout.readline()
             line = data.decode('ascii').rstrip()
             data = line.split(', ')
-            data.append(latitude)
-            data.append(longitude)
-            data.append(altitude)
-            data.append(fix_quality)
+            async with lock:
+                data.append(latitude)
+                data.append(longitude)
+                data.append(altitude)
+                data.append(fix_quality)
             print (str(data))
             
     except:
