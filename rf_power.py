@@ -1,24 +1,39 @@
 #!/usr/bin/python3
 
 import asyncio
+import sys
 
 latitude = 0
 longitude = 0
 altitude = 0
 fix_quality = 0
 
+async def connect_gps(ip, port):
+    while True:
+        try:
+            reader, writer = await asyncio.open_connection(ip, port)
+            return reader
+        except:
+            print("Cannot Connect, waiting...")
+            await asyncio.sleep(1)
+
 async def gps_reader(ip, port):
-    reader, writer = await asyncio.open_connection(ip, port)  
+    reader = await connect_gps(ip, port)
+    
     while True:
         global altitude, latitude, longitude, fix_quality
-        data = await reader.readline()
-        data = data.decode().split(',')
-        #print ('Readed data: ' + str(data)) # Update globarl vars / sync
-        altitude = data[9]
-        latitude = data[2]
-        longitude = data[4]
-        fix_quality = data[6]
-
+        try:
+            data = await reader.readline()
+            data = data.decode().split(',')
+            altitude = data[9]
+            latitude = data[2]
+            longitude = data[4]
+            fix_quality = data[6]
+        except:
+            altitude = latitude = longitude = fix_quality = 0
+            reader = await connect_gps(ip, port)
+            continue
+        
 async def power_reader ():
     proc = await asyncio.create_subprocess_exec(
         'rtl_power', '-p', '1', '-i', '1', '-f', '432100k:432112k:12k',
