@@ -38,7 +38,7 @@ async def gps_reader(ip, port):
         
 async def power_reader ():
     proc = await asyncio.create_subprocess_exec(
-        'rtl_power', '-p', '1', '-i', '1', '-f', '432100k:432112k:12k',
+        'rtl_power', '-p', '1', '-i', '1', '-f', '436000k:436050k:12k',
         stdout=asyncio.subprocess.PIPE)
     try:
         while True:
@@ -59,7 +59,7 @@ async def power_reader ():
         raise
 
 async def main ():
-    await asyncio.gather(power_reader(), gps_reader("192.168.1.4", 11123))
+    await asyncio.gather(power_reader(), gps_reader("172.20.10.1", 11123))
     
 if __name__ == "__main__":
     asyncio.run (main())
