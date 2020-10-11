@@ -21,8 +21,6 @@ with open(data_file) as csvfile:
     point = {}
     for row in posreader:
 
-        print(row[3])
-
         if center == None:
             center = [float(row[0]),float(row[1])]
             MAP = folium.Map(location = list(center), zoom_start = 200)
@@ -62,14 +60,6 @@ with open(data_file) as csvfile:
                     max_power_drone3 = float(row[2])
                     max_power_center3 = [float(row[0]),float(row[1])]
         
-        print('max power center 1')
-        print(str(max_power_center1))
-        print('max power center 2')
-        print(str(max_power_center2))
-        print('max power center 3')
-        print(str(max_power_center3))
-
- 
         point = (float(row[0]),float(row[1]))
             
         folium.Marker(point).add_to(MAP)
