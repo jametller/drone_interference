@@ -22,43 +22,43 @@ with open(data_file) as csvfile:
     for row in posreader:
 
         if center == None:
-            center = [float(row[0]),float(row[1])]
+            center = [float(row[2]),float(row[3])]
             MAP = folium.Map(location = list(center), zoom_start = 200)
         
         else:
             
-            if row[3] == '1':
+            if row[0] == '1':
                 if max_power_drone1 == None:
-                    max_power_drone1 = float(row[2])
+                    max_power_drone1 = float(row[4])
         
                 if max_power_center1 == None:
-                    max_power_center1 = [float(row[0]),float(row[1])] 
+                    max_power_center1 = [float(row[2]),float(row[3])] 
         
-                if max_power_drone1 < float(row[2]):
-                    max_power_drone1 = float(row[2])
-                    max_power_center1 = [float(row[0]),float(row[1])]
+                if max_power_drone1 < float(row[4]):
+                    max_power_drone1 = float(row4])
+                    max_power_center1 = [float(row[2]),float(row[3])]
 
-            if row[3] == '2':
+            if row[0] == '2':
                 if max_power_drone2 == None:
-                    max_power_drone2 = float(row[2])
+                    max_power_drone2 = float(row[4])
         
                 if max_power_center2 == None:
-                    max_power_center2 = [float(row[0]),float(row[1])] 
+                    max_power_center2 = [float(row[2]),float(row[3])] 
         
-                if max_power_drone2 < float(row[2]):
-                    max_power_drone2 = float(row[2])
-                    max_power_center2 = [float(row[0]),float(row[1])]
+                if max_power_drone2 < float(row[4]):
+                    max_power_drone2 = float(row[4])
+                    max_power_center2 = [float(row[2]),float(row[3])]
 
-            if row[3] == '3':
+            if row[0] == '3':
                 if max_power_drone3 == None:
-                    max_power_drone3 = float(row[2])
+                    max_power_drone3 = float(row[4])
         
                 if max_power_center3 == None:
-                    max_power_center3 = [float(row[0]),float(row[1])] 
+                    max_power_center3 = [float(row[2]),float(row[3])] 
         
-                if max_power_drone3 < float(row[2]):
-                    max_power_drone3 = float(row[2])
-                    max_power_center3 = [float(row[0]),float(row[1])]
+                if max_power_drone3 < float(row[4]):
+                    max_power_drone3 = float(row[4])
+                    max_power_center3 = [float(row[2]),float(row[3])]
         
         point = (float(row[0]),float(row[1]))
             
