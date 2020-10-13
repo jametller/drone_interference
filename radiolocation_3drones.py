@@ -20,36 +20,36 @@ with open(data_file) as csvfile:
     MAP = None
     point = {}
     for row in posreader:
-
         if center == None:
             center = [float(row[2]),float(row[3])]
             MAP = folium.Map(location = list(center), zoom_start = 200)
         
         else:
             
-            if row[0] == '1':
+            if row[0] == str(1):
                 if max_power_drone1 == None:
                     max_power_drone1 = float(row[4])
-        
+ 
                 if max_power_center1 == None:
                     max_power_center1 = [float(row[2]),float(row[3])] 
-        
+
                 if max_power_drone1 < float(row[4]):
-                    max_power_drone1 = float(row4])
+                    max_power_drone1 = float(row[4])
                     max_power_center1 = [float(row[2]),float(row[3])]
 
-            if row[0] == '2':
+            if row[0] == str(2):
                 if max_power_drone2 == None:
                     max_power_drone2 = float(row[4])
-        
+                           
                 if max_power_center2 == None:
                     max_power_center2 = [float(row[2]),float(row[3])] 
         
                 if max_power_drone2 < float(row[4]):
                     max_power_drone2 = float(row[4])
                     max_power_center2 = [float(row[2]),float(row[3])]
-
-            if row[0] == '3':
+                
+            if row[0] == str(3):
+                
                 if max_power_drone3 == None:
                     max_power_drone3 = float(row[4])
         
@@ -59,31 +59,31 @@ with open(data_file) as csvfile:
                 if max_power_drone3 < float(row[4]):
                     max_power_drone3 = float(row[4])
                     max_power_center3 = [float(row[2]),float(row[3])]
-        
+                
         point = (float(row[0]),float(row[1]))
             
         folium.Marker(point).add_to(MAP)
 
 folium.Circle(location = center,
-                    radius = 10,
+                    radius = 5,
                     color = '#fd3300',
                     fill = True,
                     fill_color = '#fd3300').add_to(MAP)
 
 folium.Circle(location = max_power_center1,
-                    radius = 15,
-                    color = '#8db100',
+                    radius = 9,
+                    color = '#ffb221',
                     fill = True,
                     fill_color = '#8db100').add_to(MAP)
 
 folium.Circle(location = max_power_center2,
-                    radius = 15,
-                    color = '#8db100',
+                    radius = 9,
+                    color = '#e121ff',
                     fill = True,
                     fill_color = '#8db100').add_to(MAP)
 
 folium.Circle(location = max_power_center3,
-                    radius = 15,
+                    radius = 8,
                     color = '#8db100',
                     fill = True,
                     fill_color = '#8db100').add_to(MAP)
